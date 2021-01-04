@@ -4,8 +4,16 @@ const btree = {
         val: 2,
         left: {
             val: 4,
-            left: null,
-            right: null
+            left: {
+                val: 8,
+                left: null,
+                right: null
+            },
+            right: {
+                val: 9,
+                left: null,
+                right: null
+            },
         },
         right: {
             val: 5,
@@ -44,7 +52,7 @@ const preOrder = (r) => {
     const stack = [r];
     while (stack.length) {
         const n = stack.pop()
-        console.log(n);
+        console.log(n.val);
         if (n.right) stack.push(n.right)
         if (n.left) stack.push(n.left)
     }
@@ -95,11 +103,11 @@ const postOrder = (r) => {
         if (n.left) stack.push(n.left)
         if (n.right) stack.push(n.right)
     }
-    while(oStack.length){
+    while (oStack.length) {
         const o = oStack.pop();
         console.log(o.val);
     }
 
 }
 
-postOrder(btree)
+inOrder(btree)
