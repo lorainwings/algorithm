@@ -93,6 +93,7 @@ const inOrder = (r) => {
 // }
 
 // 后序遍历  左->右->根  
+// 思路: 先实现根->右->左(通过先序遍历算法), 最后翻转数组即可
 const postOrder = (r) => {
     if (!r) return;
     const stack = [r];
