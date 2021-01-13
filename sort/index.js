@@ -1,3 +1,4 @@
+// 时间复杂度O(n2)
 const bubbleSort = (arr) => {
     for (let i = arr.length; i > 0; i--) {
         for (let j = 0; j < i; j++) {
@@ -11,6 +12,7 @@ const bubbleSort = (arr) => {
     return arr;
 }
 
+// 时间复杂度O(n2)
 const selectSort = (arr) => {
     for (let i = 0; i < arr.length; i++) {
         let min = i;
@@ -19,11 +21,34 @@ const selectSort = (arr) => {
                 min = j;
             }
         }
-        if (min === i) continue; // 只有一轮下来最小的值已经变化才需要交换位置
-        [arr[min], arr[i]] = [arr[i], arr[min]];
+        if (min !== i) {
+            // 只有一轮下来最小的值已经变化才需要交换位置
+            [arr[min], arr[i]] = [arr[i], arr[min]];
+        };
     }
     return arr;
 }
+
+// 小型数组效率优于冒泡及选择排序
+// 插入排序 时间复杂度O(n2)
+const insertSort = (arr) => {
+    for (let i = 1; i < arr.length; i++) {
+        let item = arr[i]; // 从第二个开始
+        let j = i;
+        while (j > 0) {
+            if (arr[j - 1] > arr[j]) {
+                arr[j] = arr[j - 1];
+            } else {
+                break; // 只要前一位不大于当前值, 那么前面的所有都不大于当前值;
+            }
+            j--;
+        }
+        arr[j] = item; // j比较完后, 就可以把本轮的item插入到最后的位置
+    }
+}
+
+// 归并排序 时间复杂度O(nlogn)
+
 
 const maxSpaceSort = (arr) => {
     if (arr.length < 2) return 0;
@@ -118,6 +143,7 @@ const minPositiveIntBest = arr => {
 module.exports = {
     bubbleSort,
     selectSort,
+    insertSort,
     maxSpaceSort,
     parityIndexSort,
     maxAtIndex,
