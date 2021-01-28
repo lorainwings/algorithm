@@ -47,7 +47,9 @@ const insertSort = (arr) => {
     }
 }
 
-// 插入排序时间复杂度O(nlogn)
+// 插入排序
+// 最理想的时间复杂度O(nlogn), 最糟糕的时间复杂度O(n*n)
+// 理想情况: 有序数组总是选取中间元素,  糟糕情况: 有序数组总选取第一个元素作为基准值
 const quickSort = (arr) => {
     if (arr.length < 2) return arr;
     let left = [], right = [], [pivot] = arr.splice(0, 1);
