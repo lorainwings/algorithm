@@ -47,7 +47,24 @@ const insertSort = (arr) => {
     }
 }
 
+// 插入排序时间复杂度O(nlogn)
+const quickSort = (arr) => {
+    if (arr.length < 2) return arr;
+    let left = [], right = [], [pivot] = arr.splice(0, 1);
+    arr.map(item => {
+        if (item < pivot) {
+            left.push(item);
+        } else {
+            right.push(item);
+        }
+    });
+    return quickSort(left).concat([pivot], quickSort(right));
+}
+
 // 归并排序 时间复杂度O(nlogn)
+const mergeSort = ()=>{
+
+}
 
 
 const maxSpaceSort = (arr) => {
@@ -144,6 +161,8 @@ module.exports = {
     bubbleSort,
     selectSort,
     insertSort,
+    quickSort,
+    mergeSort,
     maxSpaceSort,
     parityIndexSort,
     maxAtIndex,

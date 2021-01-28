@@ -1,6 +1,6 @@
 const matchAvailableBrackets = (str) => {
     const len = str.length;
-    if (str.replace(/\s/g, '').length % 2 !== 0) return false;
+    if (str.replace(/[^()\[\]{}]/g, '').length % 2 !== 0) return false;
     const stack = [];
     for (let i = 0; i < len; i++) {
         let c = str[i];
