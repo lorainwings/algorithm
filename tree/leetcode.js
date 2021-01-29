@@ -3,14 +3,14 @@
 const maxDepth = (root) => {
     let depth = 0;
     if (!root) return depth;
-    const stack = [root];
-    while (stack.length) {
+    const queue = [root];
+    while (queue.length) {
         depth++;
-        let level = stack.length;
+        let level = queue.length;
         while (level > 0) {
-            const n = stack.shift();
-            if (n.left) { stack.push(n.left); };
-            if (n.right) { stack.push(n.right); };
+            const n = queue.shift();
+            if (n.left) { queue.push(n.left); };
+            if (n.right) { queue.push(n.right); };
             level--;
         }
     }
@@ -34,15 +34,15 @@ const maxDepthCallee = (root) => {
 const minDepth = (root) => {
     let depth = 0;
     if (!root) return depth;
-    const stack = [root];
-    while (stack.length) {
+    const queue = [root];
+    while (queue.length) {
         depth++;
-        let level = stack.length;
+        let level = queue.length;
         while (level > 0) {
-            const n = stack.shift();
+            const n = queue.shift();
             if (!n.left || !n.right) return depth;
-            if (n.left) { stack.push(n.left); };
-            if (n.right) { stack.push(n.right); };
+            if (n.left) { queue.push(n.left); };
+            if (n.right) { queue.push(n.right); };
             level--;
         }
     }
