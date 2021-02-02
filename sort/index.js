@@ -47,7 +47,7 @@ const insertSort = (arr) => {
     }
 }
 
-// 插入排序
+// 快速排序
 // 最理想的时间复杂度O(nlogn), 最糟糕的时间复杂度O(n*n)
 // 理想情况: 有序数组总是选取中间元素,  糟糕情况: 有序数组总选取第一个元素作为基准值
 const quickSort = (arr) => {
@@ -64,8 +64,30 @@ const quickSort = (arr) => {
 }
 
 // 归并排序 时间复杂度O(nlogn)
-const mergeSort = ()=>{
-
+// 分的时间复杂度O(logn)
+// 合的时间复杂度O(n)
+const mergeSort = (list) => {
+    const rec = (arr) => {
+        if (arr.length === 1) return arr;
+        const mid = Math.floor(arr.length / 2);
+        const left = arr.slice(0, mid);
+        const right = arr.slice(mid);
+        const orderLeft = rec(left);
+        const orderRight = rec(right);
+        const r = [];
+        while (orderLeft.length || orderRight.length) {
+            if (orderLeft.length && orderRight.length) {
+                r.push(orderLeft[0] < orderRight[0] ? orderLeft.shift() : orderRight.shift());
+            } else if (orderLeft.length) {
+                r.push(orderLeft.shift());
+            } else if (orderRight.length) {
+                r.push(orderRight.shift());
+            }
+        };
+        return r;
+    }
+    const res = rec(list);
+    return res;
 }
 
 
