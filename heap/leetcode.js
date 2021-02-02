@@ -30,3 +30,69 @@ const topKFrequent = (nums, k) => {
     return h.heap.map(item => item.key);
 }
 
+
+// 23. 合并k个排序链表
+const mergeKLists = (lists) => {
+    // 首先重写MinHeap的部分方法
+    class MinHeapExt extends MinHeap {
+        constructor(...args) {
+            super(...args);
+        }
+        shiftUp(index) {
+            const pIndex = this.getParent(index);
+            const parent = this.heap[pIndex];
+            const current = this.heap[index];
+            if (parent?.val > current?.val) {
+                this.swap(pIndex, index);
+                this.shiftUp(pIndex);
+            }
+        }
+        shiftDown(index) {
+            const leftIndex = getLeft(index);
+            const rightIndex = this.getRight(index);
+            if (this.heap[leftIndex]?.val < this.heap[index]?.val) {
+                this.swap(leftIndex, index);
+                this.shiftDown(leftIndex);
+            }
+            if (this.heap[rightIndex]?.val < this.heap[index]?.val) {
+                this.swap(rightIndex, index);
+                this.shiftDown(rightIndex);
+            }
+        }
+        pop() {
+            const topIndex = 0;
+            if (this.size() === 1) return this.heap.shift();
+            this.heap[topIndex] = this.heap.pop();
+            this.shiftDown(topIndex);
+            return this.heap[topIndex];
+        }
+    }
+    class ListNode {
+        constructor(val) {
+            this.val = val;
+            this.next = null;
+        }
+    }
+
+    const res = new ListNode(0);
+    const p = res;
+    const h = new MinHeapExt();
+    lists.forEach(l => {
+        if (l) h.insert(l);
+    });
+    while (h.size()) {
+        const n = h.pop();
+        p.next = n;
+        p = p.next;
+        if (n.next) h.insert(n.next);
+    }
+
+    return res.next;
+}
+
+
+export default {
+    maxKthLargest,
+    topKFrequent,
+    mergeKLists
+}
