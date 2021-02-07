@@ -24,7 +24,7 @@ class MinHeap {
     }
 
     getParent(index) {
-        return index - 1 >> 1;
+        return index - 1 >> 1; // 右移运算符基本上相当于除以2的指定次方(整除即商下取整)
     }
 
     swap(pIndex, index) {

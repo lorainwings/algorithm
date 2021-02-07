@@ -42,4 +42,36 @@ const bfsG = (n) => {
     }
 }
 
-dfsG(2)
+// dfsG(2)
+
+// 最小距离(Dijkstra)狄克斯特拉算法
+const Dijkstra = () => {
+    const processed = new Map();
+    const find_lowest_cost_node = (costs) => {
+        let lowest_cost = 0;
+        let lowest_cost_node = null;
+        costs.forEach(node => {
+            const cost = costs[node]
+            if (cost < lowest_cost && !processed.has(node)) {
+                lowest_cost = cost
+                lowest_cost_node = node
+            }
+        })
+        return lowest_cost_node
+    }
+
+    let node = find_lowest_cost_node(costs)
+    while (!node) {
+        cost = costs[node]
+        neighbors = graph[node]
+        for (n in neighbors.keys()) {
+            new_cost = cost + neighbors[n]
+            if (costs[n] > new_cost) {
+                costs[n] = new_cost;
+                parents[n] = node;
+            }
+        }
+        processed.set(node)
+        node = find_lowest_cost_node(costs)
+    }
+}
