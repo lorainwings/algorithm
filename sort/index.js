@@ -35,8 +35,8 @@ const insertSort = (arr) => {
     for (let i = 1; i < arr.length; i++) {
         let item = arr[i]; // 从第二个开始
         let j = i;
-        while (j > 0) {
-            if (arr[j - 1] > arr[j]) {
+        while (j > 0) { // for(; j>0; i++){}
+            if (arr[j - 1] > item) {
                 arr[j] = arr[j - 1];
             } else {
                 break; // 只要前一位不大于当前值, 那么前面的所有都不大于当前值;
@@ -45,6 +45,7 @@ const insertSort = (arr) => {
         }
         arr[j] = item; // j比较完后, 就可以把本轮的item插入到最后的位置
     }
+    return arr;
 }
 
 // 快速排序
