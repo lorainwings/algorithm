@@ -204,13 +204,15 @@ Promise.prototype.race = function (promiseArr) {
     if (!Array.isArray(promiseArr)) {
         throw new TypeError('The arguments should be an array!')
     }
-    try {
-        promiseArr.forEach(item => {
-            item.then(resolve, reject);
-        });
-    } catch (e) {
-        return reject(e);
-    }
+    return new Promise((resolve, reject) => {
+        try {
+            promiseArr.forEach(item => {
+                item.then(resolve, reject);
+            });
+        } catch (e) {
+            return reject(e);
+        }
+    });
 }
 
 
