@@ -23,7 +23,15 @@ const strCount = (s1) => {
     if (typeof s1 !== 'string') {
         return new TypeError('s1 is not string!');
     }
-    if (!/[a-zA-Z]/gi.test(s1) || s1.length > 100) {
+    /* 
+
+    此处有个正则的坑, test加了g是匹配全部字符串的, 所有 'absdfa___ds123'这些都是能匹配的, 所以必须加上开头和结尾 ^$
+    扩展=>仅匹配字母的正则:
+    1. /^[^\d\W\_]+$/gi
+    2. /^[a-z]+$/gi
+
+    */
+    if (!/^[a-z]$/gi.test(s1) || s1.length > 100) {
         return new Error('s1 must composed of letters and length must less than 100!');
     }
     for (let i = 0, len = 1; i < s1.length; i++) {
