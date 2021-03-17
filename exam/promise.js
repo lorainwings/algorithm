@@ -186,7 +186,8 @@ Promise.prototype.all = function (promiseArr) {
             let resolveResult = [];
             for (let i = 0; i < promiseArr.length; i++) {
                 const p = promiseArr[i];
-                p.then((data) => {
+                const wp = p !== null && typeof p.then === 'function' && typeof p.catch === 'function' ? p : Promise.resolve(p);
+                wp.then((data) => {
                     resolveResult.push(data);
 
                     if (resolveResult.length === promiseArr.length) {
@@ -207,7 +208,8 @@ Promise.prototype.race = function (promiseArr) {
     return new Promise((resolve, reject) => {
         try {
             promiseArr.forEach(item => {
-                item.then(resolve, reject);
+                const witem = item !== null && typeof item.then === 'function' && typeof item.catch === 'function' ? item : Promise.resolve(item);
+                witem.then(resolve, reject);
             });
         } catch (e) {
             return reject(e);
