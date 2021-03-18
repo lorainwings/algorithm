@@ -58,8 +58,9 @@ class LRU {
         if (!this.caches.get(k)) {
             if (this.caches.size === this.limit) {
                 // 获取到Map中第一个数据的key值，即最近最少访问的key，删之
-                const first = this.caches().keys().next().value;
-                this.caches.delete(first);
+                // const first = this.caches().keys().next().value;
+                const [[firstk]] = this.caches;
+                this.caches.delete(firstk);
             }
         } else {
             this.caches.delete(k);
