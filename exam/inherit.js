@@ -32,3 +32,18 @@ const inherit = (Parent, Child) => {
     // 仍旧存在的问题
     // 上面静态属性继承存在一个问题:在陈旧浏览器中，属性和方法的继承我们是静 态拷⻉的，继承完后续父类的改动不会自动同步到子类。这是不同于正常面向对 象思想的。但是这种组合式继承，已经相对完美、优雅。
 }
+
+
+// 扩展: 寄生组合继承Date
+
+function SubDate(...args) {
+    // 使用apply调用bind需要传递2个绑定参数
+    const dateInst = new (Function.prototype.bind.apply(Date, [Date]))(...args)
+    // dateInst.__proto__ = SubDate.prototype;
+    Object.setPrototypeOf(dateInst, SubDate.prototype);
+    return dateInst;
+}
+Object.setPrototypeOf(SubDate.prototype, Date.prototype);
+// test
+
+const sd = new SubDate(new Date());

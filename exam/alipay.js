@@ -48,6 +48,12 @@ try {
 // 将输入的数组组装成一颗树状的数据结构，时间复杂度越小越好。要求程序具有侦测错误输入的能力
 
 function transform(arr) {
+    function isCycleLink(o, t) {
+        const p = map.get(o.parentId);
+        if (!p) return false;
+        if (p === t) return true;
+        return isCycleLink(p, t);
+    }
     if (!Array.isArray) return new TypeError('input is not array!');
     const map = new Map();
     const roots = [];
@@ -57,13 +63,14 @@ function transform(arr) {
         const parent = map.get(pid);
         if (pid) {
             if (parent) {
-                if (pid > item.id) {
-                    let c = map.get(pid);
-                    while (c) {
-                        if (c === item) return [];
-                        c = map.get(c.parentId);
-                    };
-                }
+                // if (pid > item.id) {
+                //     let c = map.get(pid);
+                //     while (c) {
+                //         if (c === item) return [];
+                //         c = map.get(c.parentId);
+                //     };
+                // }
+                if (isCycleLink(item, item)) return [];
                 parent.children = parent.children ? [...parent.children, item] : [item]
             }
         } else {
@@ -226,10 +233,10 @@ try {
     const obj = { a: { b: { c: { d: 'xxoo' } } } };
     const proxy = onChange(obj, logger);
 
-    console.log(proxy.a); // logger called here in get trap
+    // console.log(proxy.a); // logger called here in get trap
     assert(counter === 1);
 
-    console.log(proxy.a.b.c.d);
+    // console.log(proxy.a.b.c.d);
     assert(counter === 5);
 
     proxy.a = 'b'; // logger called here as well in set trap
