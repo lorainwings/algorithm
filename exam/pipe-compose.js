@@ -21,3 +21,35 @@ const compose = (...fns) => {
         return f(result);
     }
 }
+
+const composeWhile = (...fns) => {
+    return (...args) => {
+        let result = fns.pop()(...args);
+        while (fns.length) {
+            const fn = fns.pop();
+            result = fn(result);
+        }
+    }
+}
+
+// 手写中间件use
+const express = () => {
+
+    const stack = [];
+
+    const app = () => {
+        let i = 0;
+        
+        const next = () => {
+            const fn = stack[i++];
+            if (!fn) return;
+            return fn(req, res, next);
+        }
+
+        next(fn);
+    }
+
+    app.use = (task) => stack.push(task);
+
+    return app;
+}
