@@ -1,5 +1,5 @@
-const { transform, onChange } = require('../exam/alipay.js')
-
+// const { transform, onChange } = require('../exam/alipay.js')
+const { transform, onChange } = require('../exam/alibaba.js')
 
 describe('transform算法', () => {
     // 测试用例1

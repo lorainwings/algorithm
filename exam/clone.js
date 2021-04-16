@@ -107,6 +107,7 @@ for (const key in obj) {
 }
  */
 
+// 结论: 使用JSON.parse(JSON.stringify)会丢失Symbol,Function类型; Set/Map/Error/Regexp会变成{};
 module.exports = {
     clone
 }

@@ -59,11 +59,66 @@ var obj = {
 
 }
 
-const v = deleteNull(obj);
-console.log(JSON.stringify(v, null, 2));
+// const v = deleteNull(obj);
+// console.log(JSON.stringify(v, null, 2));
 
 
 const toRgb = (hex) => {
     const [r, g, b] = (hex.length < 6 ? hex.slice(1).replace(/\w{1}/gi, '$&$&,') : hex.slice(1).replace(/\w{2}/gi, '$&,')).split(',');
     return `rgb(${parseInt(r, 16)},${parseInt(g, 16)},${parseInt(b, 16)})`
 }
+
+/*  
+    计算所有从根节点可以到达的路径
+    [[1, 3, 6], [1, 4, 8, 13], ... ] 
+ */
+const getAllPath = (list) => {
+    const res = [];
+    list.sort((a, b) => a.id - b.id);
+    list.forEach((i) => {
+        i.path = [i.id];
+    });
+    for (let i = 0; i < list.length; i++) {
+        const cr = list[i].children;
+        if (cr && cr.length > 0) {
+            cr.forEach((child) => {
+                const targetC = ((id) => list.find((i) => i.id === id))(child);
+                targetC.path.unshift(...list[i].path);
+            });
+        } else {
+            res.push(list[i].path);
+        }
+    }
+    return res;
+}
+
+const list = [
+    { id: 6 },
+    { id: 2, children: [5] },
+    { id: 13 },
+    { id: 5, children: [10, 11] },
+    { id: 1, children: [2, 3, 4] },
+    { id: 10 },
+    { id: 8, children: [13] },
+    { id: 4, children: [8, 9] },
+    { id: 9 },
+    { id: 3, children: [6, 7] },
+    { id: 11, children: [14] },
+    { id: 14 },
+    { id: 7, children: [12] },
+    { id: 12 }
+]
+
+// const result = getAllPath(list);
+//输出结果: [[1,3,6],[1,4,9],[1,2,5,10],[1,3,7,12],[1,4,8,13],[1,2,5,11,14]]
+
+
+const dfsTree = (arr) => {
+    const dfs = (t) => {
+        console.log(t);
+        t.children && t.children.forEach(dfs);
+    }
+    arr.forEach(dfs);
+}
+
+// dfsTree(list)
