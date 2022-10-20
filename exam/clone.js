@@ -107,6 +107,92 @@ for (const key in obj) {
 }
  */
 
+
+// 方案一
+var deepCopy = function (obj) {
+    const base = ['Date', 'String', 'Number', 'Boolean', 'Arguments'];
+    const refer = ['Set', 'Map', 'Array', 'Object'];
+    const other = ['Error', 'Symbol', 'RegExp', 'Function'];
+    const isObject = (t) => t != null && (typeof t === 'object' || typeof t === 'function');
+    const typeGet = t => Object.prototype.toString.call(t).slice(8, -1);
+    const forEvery = (t, cb) => {
+        const type = typeGet(t);
+        const arr = type === 'Array' ? t : Object.keys(t);
+        arr.forEach((item, index) => {
+            if (type === 'Array') cb(itme, index, t);
+            else cb(t[item], item, t);
+        });
+    }
+
+
+    const cloneOther = t => {
+        const type = typeGet(t);
+        const funs = Symbol();
+        const init = {
+            [funs]: {
+                Error(t) {
+                    return new t.constructor(t.message);
+                },
+                Symbol(t) {
+                    return Object.prototype.valueOf.call(t);
+                },
+                RegExp(t) {
+                    return t.constructor(t.source, t.flags)
+                },
+                Function(t) {
+                    const f = eval(`${t}`);
+                    Object.setPrototypeOf(f, t);
+                    Object.defineProperty(f, 'name', {
+                        value: t.name
+                    });
+                    return f;
+
+                }
+            }
+        }
+        if (base.includes(type)) return new t.constructor(t);
+        if (init[funs][type]) return init[funs][type](t);
+        return null;
+    }
+
+
+    const clone = (obj, map = new WeakMap()) => {
+        if (!isObject(obj)) return obj;
+        const type = typeGet(obj);
+        let cloneItem = refer.includes(type) ? new type.constructor() : cloneOther(t);
+
+        if (map.get(obj)) return map.get(t);
+        map.set(obj, cloneItem);
+
+        if (!refer.includes(obj)) return null;
+
+        if (type === 'Set') {
+            obj.forEach((value) => {
+                const c = clone(value, map);
+                cloneItem.add(c);
+            });
+            return cloneItem;
+        }
+        else if (type === 'Map') {
+            obj.forEach((value, key) => {
+                const c = clone(value, map);
+                cloneItem.set(key, c);
+            });
+            return cloneItem;
+        }
+
+        forEvery(obj, (value, key) => {
+            cloneItem[key] = clone(value, map);
+        });
+
+        return cloneItem;
+
+    }
+
+
+    return clone(obj);
+}
+
 // 结论: 使用JSON.parse(JSON.stringify)会丢失Symbol,Function类型; Set/Map/Error/Regexp会变成{};
 module.exports = {
     clone

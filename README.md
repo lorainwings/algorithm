@@ -1,17 +1,17 @@
 # Algorithm
 
-记录学习算法的历程, 积跬步以至千里
+用于学习算法和数据结构的代码库, 也包含了一些面试中的笔试题
 
-## Development Setup
+## Setup
 
 install deps
 
 ```sh
-npm i
+pnpm i
 ```
 
 run test
 
 ```sh
-npm run test
+pnpm run test
 ```

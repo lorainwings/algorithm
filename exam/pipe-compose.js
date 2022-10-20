@@ -42,8 +42,17 @@ const express = () => {
             if (!fn) return;
             return fn(req, res, next);
         }
-        next(fn);
+        next();
     }
     app.use = (task) => stack.push(task);
     return app;
+}
+
+// 柯里化
+const currying = (fn, ...args) => {
+    if (args.length >= fn.length) {
+        return fn(...args);
+    } else {
+        return (...args2) => currying(fn, ...args, ...args2);
+    }
 }

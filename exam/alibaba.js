@@ -221,7 +221,7 @@ const lastPromise = (promiseFunction) => {
   );
 */
 function transform(arr) {
-    if (!Array.isArray) return new TypeError('arr is not an array!');
+    if (!Array.isArray(arr)) return new TypeError('arr is not an array!');
     const map = new Map();
     const trees = [];
     const detectCycle = (o, t) => {
@@ -246,3 +246,8 @@ function transform(arr) {
 }
 
 /************************************** 代码分界线 ***************************************/
+
+
+module.exports = {
+    transform
+}
