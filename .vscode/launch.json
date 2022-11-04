@@ -9,9 +9,10 @@
       "request": "launch",
       "name": "Typescript Debug",
       "skipFiles": [
-        "<node_internals>/**"
+        "<node_internals>/**",
+        "**/node_modules/**"
       ],
-      "program": "${workspaceFolder}/node_modules/ts-node/dist/bin.js",
+      "runtimeExecutable": "esno",
       "args": [
         "${file}"
       ],

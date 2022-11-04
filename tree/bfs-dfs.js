@@ -214,7 +214,7 @@ const bfs = (tree) => {
 
 // console.group("====深度=======");
 
-// dfs(d);
+dfs(d);
 
 // console.group("====广度=======");
 
