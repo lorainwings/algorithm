@@ -1,7 +1,7 @@
 // 手写Promise实现, 成功通过PromiseA+规范的872条测试用例
 
 const joinMicroTask = (callback) => {
-    if (queueMicrotask) return queueMicrotask(callback);
+    if ('queueMicrotask' in globalThis) return queueMicrotask(callback);
     const value = 1;
     const node = document.createTextNode(value);
     const options = { characterData: true };
@@ -174,7 +174,7 @@ Promise.resolve = function (data) {
 }
 
 Promise.reject = function (error) {
-    return new Promise((resolve, reject) => reject(error));
+    return new Promise((_, reject) => reject(error));
 }
 
 Promise.prototype.all = function (promiseArr) {

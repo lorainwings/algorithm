@@ -1,24 +1,167 @@
 {
-  // Use IntelliSense to learn about possible attributes.
-  // Hover to view descriptions of existing attributes.
-  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  // 使用 IntelliSense 了解相关属性。
+  // 悬停以查看现有属性的描述。
+  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "ChromeCanary调试",
+      "request": "launch",
+      "type": "chrome",
+      "url": "http://localhost:8080",
+      "webRoot": "${workspaceFolder}",
+      "userDataDir": false,
+      "runtimeExecutable": "canary",
+      "runtimeArgs": [
+        "--auto-open-devtools-for-tabs",
+        // 无痕模式
+        // "--incognito"
+      ]
+    },
+    {
+      "name": "ChromeStable调试",
+      "request": "launch",
+      "type": "chrome",
+      "url": "http://localhost:8081",
+      "webRoot": "${workspaceFolder}/projects/wds-html/src",
+      // "preLaunchTask": "debug", // 添加的配置，在执行之前需要启动项目，这个是启动项目用的任务。
+      "sourceMapPathOverrides": {
+        // 把调试的文件 sourcemap 到的路径映射到本地的文件
+        "webpack:///./*": "${webRoot}/*",
+        "webpack:///src/*": "${webRoot}/*",
+        "webpack:///./src/*": "${webRoot}/*",
+        "webpack:///*": "*",
+        "webpack:///./~/*": "${webRoot}/node_modules/*",
+      }, // 添加的配置，为了找到打包文件和源代码之间的关联，使断点生效。
+    },
+    {
+      "name": "Static调试",
+      "request": "launch",
+      "type": "chrome",
+      "runtimeExecutable": "canary",
+      "userDataDir": false,
+      "webRoot": "${workspaceFolder}",
+      "file": "${workspaceFolder}/code-snippets/htmls/vue滑动卡片跟随.html",
+      "pathMapping": {
+        // 服务的路径映射到本地的目录
+        "/static/js/": "${workspaceFolder}/src/"
+      }
+    },
+    {
       "type": "node",
       "request": "launch",
-      "name": "Typescript Debug",
+      "name": "Node调试",
+      // 这里配置脚本位置(package.json->main)
+      "program": "${file}",
+      // 传给program的参数
+      // "args": [
+      //   "-l https://juejin.cn/book/7070324244772716556/section/7148818133343158286"
+      // ],
+      "cwd": "${workspaceFolder}",
       "skipFiles": [
-        "<node_internals>/**",
-        "**/node_modules/**"
+        // "<node_internals>/**"
       ],
-      "runtimeExecutable": "esno",
-      "args": [
-        "${file}"
+      // console 要设置为 integratedTerminal，这样日志会输出在 terminal，就和我们手动执行 npm run xxx 是一样的
+      // 不然，日志会输出在 debug console。颜色啥的都不一样
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Pnpm调试",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/projects/webpack-error-test",
+      "env": {
+        "ENV_VAR": "1123"
+      },
+      // "envFile":"...",
+      "runtimeArgs": [
+        "run-script",
+        "build-dev"
       ],
-      // "outFiles": [
-      //     "${workspaceFolder}/**/*.js"
-      // ]
-    }
+      "runtimeExecutable": "pnpm",
+      "skipFiles": [],
+      "type": "node",
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**"
+      ],
+      "stopOnEntry": true
+    },
+    {
+      "name": "Typescript调试",
+      "program": "${file}",
+      "request": "launch",
+      // 默认是 node, 从 PATH 的环境变量中查找对应名字的 runtime 启动
+      "runtimeExecutable": "esno", // ts-node也可以, 执行效率没有esno快
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "node",
+      // 入口处断住
+      "stopOnEntry": true
+    },
+    {
+      // require(child_process).exec('xxx.js')
+      "name": "Child进程调试",
+      "program": "${file}",
+      "request": "launch",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "node",
+      "console": "internalConsole",
+      "autoAttachChildProcesses": true
+    },
+    {
+      "name": "Pick进程调试",
+      "processId": "${command:PickProcess}",
+      "request": "attach",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "node",
+    },
+    {
+      "name": "Vite调试",
+      "type": "chrome",
+      "request": "launch",
+      "runtimeExecutable": "canary",
+      "runtimeArgs": [
+        "--auto-open-devtools-for-tabs"
+      ],
+      "userDataDir": false,
+      "url": "http://localhost:3000",
+      // vite 时会有一些热更之类的文件，也会被映射到源码，导致断在某名奇妙的地方
+      // 把 webRoot 配置成任意的一个不存在的目录，比如 noExistPath，这样这些文件就不会被错误的映射到源码里了。
+      // 算是一种 hack 的处理方式
+      "webRoot": "${workspaceFolder}/noExistPath"
+    },
+    {
+      // 可以调试多个项目, 先自己在浏览器打开相应的页面
+      "type": "chrome",
+      // 连接某个已经在调试模式启动的 url 进行调试
+      "request": "attach",
+      "name": "Vite 模块联邦",
+      "port": 9222,
+      // "preLaunchTask": "launch-chrome",
+      "webRoot": "${workspaceFolder}/projects/module-federation/",
+      "skipFiles": [],
+      "sourceMapPathOverrides": {
+        "webpack:///./*": "${webRoot}/*",
+        "webpack:///src/*": "${webRoot}/*",
+        "webpack:///./src/*": "${webRoot}/*",
+        "webpack:///*": "*",
+        "webpack:///./~/*": "${webRoot}/node_modules/*"
+      }
+    },
+    {
+      // nodemon --inspect-brk=9229 x.js
+      // nodemon --inspect=9229 x.js
+      "name": "Server附加调试",
+      "port": 9229,
+      "request": "attach",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "node"
+    },
   ]
 }
