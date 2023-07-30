@@ -3,8 +3,6 @@
 //   console.log('A')
 // }
 
-import { log } from "console";
-
 // 改写成等价模式
 function async1() {
   Promise.resolve(async2()).then(() => {
