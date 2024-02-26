@@ -59,3 +59,8 @@ const currying = (fn, ...args) => {
     return (...args2) => currying(fn, ...args, ...args2);
   }
 };
+
+// const curryingFun = currying(fun)
+// curryingFun(1)(2)(3);  // 1 2 3 
+// curryingFun(1, 2)(3);  // 1 2 3 
+// curryingFun(1, 2, 3);  // 1 2 3 
