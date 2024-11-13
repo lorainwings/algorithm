@@ -25,8 +25,7 @@ function checkType(source) {
 
 // 拷贝RegExp的方法
 function cloneReg(source) {
-  const reFlags = /\w*$/;
-  const result = new source.constructor(source.source, reFlags.exec(source));
+  const result = new source.constructor(source.source, source.flags);
   result.lastIndex = source.lastIndex;
   return result;
 }
