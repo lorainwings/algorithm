@@ -119,7 +119,7 @@ function defaultCopy(obj) {
     const type = typeGet(t);
     const arr = type === "Array" ? t : Object.keys(t);
     arr.forEach((item, index) => {
-      if (type === "Array") cb(itme, index, t);
+      if (type === "Array") cb(item, index, t);
       else cb(t[item], item, t);
     });
   };
@@ -148,7 +148,6 @@ function defaultCopy(obj) {
         },
       },
     };
-    if (base.includes(type)) return new t.constructor(t);
     if (init[funs][type]) return init[funs][type](t);
     return null;
   };
@@ -156,9 +155,14 @@ function defaultCopy(obj) {
   const clone = (obj, map = new WeakMap()) => {
     if (!isObject(obj)) return obj;
     const type = typeGet(obj);
-    let cloneItem = refer.includes(type)
-      ? new type.constructor()
-      : cloneOther(t);
+
+    if (refer.includes(type)) {
+      cloneItem = new obj.constructor();
+    } else if (base.includes(type)) {
+      cloneItem = new t.constructor(t);
+    } else {
+      cloneItem = cloneOther(t);
+    }
 
     if (map.get(obj)) return map.get(t);
     map.set(obj, cloneItem);

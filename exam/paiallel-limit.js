@@ -46,7 +46,7 @@ class SuperTask {
       task()
         .then(resolve, reject)
         .finally(() => {
-          this.#runningNum--;``
+          this.#runningNum--;
           this.run();
         });
       this.#runningNum++;
